@@ -26,7 +26,14 @@ public class FizzBuzz {
      * @throws IllegalArgumentException if b is zero
      */
     public static boolean divides(int a, int b) throws IllegalArgumentException {
-        throw new NotImplementedException();
+            	
+    	if(b == 0){
+    		throw new IllegalArgumentException();
+    	}else if(a % b == 0){
+    		return true;
+    	}else{
+    		return false;
+    	}
     }
 
     /**
@@ -41,7 +48,20 @@ public class FizzBuzz {
      * @return a message according to the format above, or null if n is not divisible by either 3 or 5
      */
     public static String message(int n) {
-        throw new NotImplementedException();
+    	
+    	String nMessage = n + ": ";
+        
+    	if(n % 3 == 0 && n % 5 == 0){
+    		nMessage = nMessage + "FizzBuzz";
+    	}else if(n % 3 == 0){
+    		nMessage = nMessage + "Fizz";
+    	}else if(n % 5 == 0){
+    		nMessage = nMessage + "Buzz";
+    	}else{
+    		return null; 
+    	}
+    	
+    	return nMessage;
     }
 
     /**
@@ -55,7 +75,32 @@ public class FizzBuzz {
      * @throws IllegalArgumentException if the given end is less than the given start
      */
     public static String[] messages(int start, int end) throws IllegalArgumentException {
-        throw new NotImplementedException();
+    	
+    	if(end < start){
+    		throw new IllegalArgumentException();
+    	}
+    	
+    	int messageCount = 0;
+    	for(int i = start; i < end; i++){
+    		if(message(i) != null){
+    			messageCount++;
+    		}
+    	}
+    	
+    	String[] arrayOfMessages = new String[messageCount];
+    	String currentMessage;
+    	int currentIndex = 0;
+    	
+    	for(int i = start; i < end; i++){
+    		currentMessage = message(i);
+    		
+    		if(currentMessage != null){
+    			arrayOfMessages[currentIndex] = currentMessage;
+    			currentIndex++;
+    		}
+    	}
+    	
+    	return arrayOfMessages;
     }
 
     /**
@@ -63,7 +108,13 @@ public class FizzBuzz {
      * the relevant messages to sysout
      */
     public static void main(String[] args) {
-        throw new NotImplementedException();
+        
+    	String currentMessage;
+    	
+    	for(int i = 1; i <= 115; i++){
+    		currentMessage = message(i);
+    		System.out.println(currentMessage);
+    	}
     }
 
 }
