@@ -51,11 +51,11 @@ public class FizzBuzz {
     	
     	String nMessage = n + ": ";
         
-    	if(n % 3 == 0 && n % 5 == 0){
+    	if(divides(n,3) && divides(n,5)){
     		nMessage = nMessage + "FizzBuzz";
-    	}else if(n % 3 == 0){
+    	}else if(divides(n,3)){
     		nMessage = nMessage + "Fizz";
-    	}else if(n % 5 == 0){
+    	}else if(divides(n,5)){
     		nMessage = nMessage + "Buzz";
     	}else{
     		return null; 
@@ -88,14 +88,12 @@ public class FizzBuzz {
     	}
     	
     	String[] arrayOfMessages = new String[messageCount];
-    	String currentMessage;
     	int currentIndex = 0;
     	
     	for(int i = start; i < end; i++){
-    		currentMessage = message(i);
     		
-    		if(currentMessage != null){
-    			arrayOfMessages[currentIndex] = currentMessage;
+    		if(message(i) != null){
+    			arrayOfMessages[currentIndex] = message(i);
     			currentIndex++;
     		}
     	}

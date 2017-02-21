@@ -73,8 +73,6 @@ public class Fibonacci {
         
     	if(count < 0){
     		throw new IllegalArgumentException();
-    	}else if(count == 0){
-    		return new int[0];
     	}
     	
     	int[] fibSequence = new int[count];
