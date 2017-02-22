@@ -3,6 +3,10 @@ package com.cooksys.ftd.assignments.objects;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class SimplifiedRational implements IRational {
+	
+	private int numerator;
+	private int denominator;
+	
     /**
      * Determines the greatest common denominator for the given values
      *
@@ -12,7 +16,20 @@ public class SimplifiedRational implements IRational {
      * @throws IllegalArgumentException if a <= 0 or b < 0
      */
     public static int gcd(int a, int b) throws IllegalArgumentException {
-        throw new NotImplementedException();
+        
+    	if(a <= 0 || b < 0){
+    		throw new IllegalArgumentException();
+    	}
+    	
+    	while(b != 0){
+    		if(a > b){
+    			a = a - b;
+    		}else{
+    			b = b - a;
+    		}
+    	}
+    	
+    	return a;
     }
 
     /**
@@ -29,7 +46,23 @@ public class SimplifiedRational implements IRational {
      * @throws IllegalArgumentException if the given denominator is 0
      */
     public static int[] simplify(int numerator, int denominator) throws IllegalArgumentException {
-        throw new NotImplementedException();
+        
+    	if(denominator == 0){
+    		throw new IllegalArgumentException();
+    	}
+    	
+    	int[] fraction = new int[]{numerator, denominator};
+    	
+    	if(numerator == 0){
+    		fraction[1] = 1;
+    		return fraction;
+    	}
+    	
+    	int divisor = gcd(Math.abs(numerator), Math.abs(denominator));
+    	fraction[0] = fraction[0] / divisor;
+    	fraction[1] = fraction[1] / divisor;
+    	
+    	return fraction;
     }
 
     /**
@@ -45,7 +78,18 @@ public class SimplifiedRational implements IRational {
      * @throws IllegalArgumentException if the given denominator is 0
      */
     public SimplifiedRational(int numerator, int denominator) throws IllegalArgumentException {
-        throw new NotImplementedException();
+        
+    	if(denominator == 0){
+    		throw new IllegalArgumentException();
+    	}
+    	
+    	int fraction[] = new int[2];
+    	if(numerator != 0){
+    		fraction = simplify(numerator, denominator);
+    	}
+    	
+    	this.numerator = fraction[0];
+    	this.denominator = fraction[1];
     }
 
     /**
@@ -53,7 +97,7 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public int getNumerator() {
-        throw new NotImplementedException();
+        return this.numerator;
     }
 
     /**
@@ -61,7 +105,7 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public int getDenominator() {
-        throw new NotImplementedException();
+        return this.denominator;
     }
 
     /**
@@ -77,7 +121,12 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public SimplifiedRational construct(int numerator, int denominator) throws IllegalArgumentException {
-        throw new NotImplementedException();
+        
+    	if(denominator == 0){
+    		throw new IllegalArgumentException();
+    	}
+    	
+    	return new SimplifiedRational(numerator, denominator);
     }
 
     /**
@@ -88,7 +137,12 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public boolean equals(Object obj) {
-        throw new NotImplementedException();
+    	if(obj instanceof SimplifiedRational){
+    		if(((SimplifiedRational) obj).getNumerator() == this.getNumerator() && ((SimplifiedRational) obj).getDenominator() == this.getDenominator()){
+    			return true;
+    		}
+    	}
+    	return false;
     }
 
     /**
@@ -100,6 +154,21 @@ public class SimplifiedRational implements IRational {
      */
     @Override
     public String toString() {
-        throw new NotImplementedException();
+        
+    	String output = new String();
+    	
+    	if(this.getNumerator() > 0 && this.getDenominator() > 0){
+    		output = output + this.getNumerator() + "/" + this.getDenominator();
+    	}else if(this.getNumerator() < 0 && this.getDenominator() < 0){
+    		output = output + (-1 * this.getNumerator()) + "/" + (-1 * this.getDenominator());
+    	}else{
+    		if(this.getNumerator() < 0){
+    			output = output + this.getNumerator() + "/" + this.getDenominator();
+    		}else{
+    			output = output + (-1 * this.getNumerator()) + "/" + (-1 * this.getDenominator());
+    		}
+    	}
+    	
+    	return output;
     }
 }
