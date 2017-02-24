@@ -3,7 +3,6 @@ package com.cooksys.ftd.assignments.collections;
 import com.cooksys.ftd.assignments.collections.hierarchy.Hierarchy;
 import com.cooksys.ftd.assignments.collections.model.Capitalist;
 import com.cooksys.ftd.assignments.collections.model.FatCat;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
@@ -36,12 +35,12 @@ public class MegaCorp implements Hierarchy<Capitalist, FatCat> {
     		return false;
     	}
         
-    	if(set.contains(capitalist)){
+    	if(has(capitalist)){
     		return false;
     	}
     	
     	if(capitalist.hasParent()){
-    		if(!set.contains(capitalist.getParent())){
+    		if(!has(capitalist.getParent())){
     			if(add(capitalist.getParent())){
     				set.add(capitalist);
     				return true;
@@ -123,7 +122,7 @@ public class MegaCorp implements Hierarchy<Capitalist, FatCat> {
     		return childSet;
     	}
     	
-    	if(set.contains(fatCat)){
+    	if(has(fatCat)){
     		
     		for(Capitalist i : set){
     			if(i.getParent() != null && i.getParent().equals(fatCat)){
@@ -147,14 +146,7 @@ public class MegaCorp implements Hierarchy<Capitalist, FatCat> {
     	
     	for(Capitalist i : set){
     		if(i instanceof FatCat){
-    			HashSet<Capitalist> tempSet = new HashSet<>();
-    			
-    			for(Capitalist j : set){
-    				if(j.getParent() == i){
-    					tempSet.add(j);
-    				}
-    			}
-    			hierarchyMap.put((FatCat)i, tempSet);
+    			hierarchyMap.put((FatCat)i, getChildren((FatCat)i));
     		}
     	}
     	
@@ -176,10 +168,10 @@ public class MegaCorp implements Hierarchy<Capitalist, FatCat> {
     		return parentChain;
     	}
     	
-    	FatCat tempParent = (FatCat)capitalist.getParent();
+    	FatCat tempParent = capitalist.getParent();
     	
     	while(tempParent != null){
-    		if(!set.contains(tempParent)){
+    		if(!has(tempParent)){
     			parentChain.clear();
     			return parentChain;
     		}
