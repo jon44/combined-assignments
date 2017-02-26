@@ -6,7 +6,12 @@ import com.cooksys.ftd.assignments.file.model.Session;
 import com.cooksys.ftd.assignments.file.model.Student;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -21,7 +26,20 @@ public class Main {
      * @return a {@link Student} object built using the {@link Contact} data in the given file
      */
     public static Student readStudent(File studentContactFile, JAXBContext jaxb) {
-        return null; // TODO
+    	
+    	Contact contact = null;
+        
+    	try {
+			Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+			contact = (Contact) unmarshaller.unmarshal(studentContactFile);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+    	
+    	Student student = new Student();
+    	student.setContact(contact);
+    	
+    	return student;
     }
 
     /**
@@ -32,7 +50,15 @@ public class Main {
      * @return a list of {@link Student} objects built using the contact files in the given directory
      */
     public static List<Student> readStudents(File studentDirectory, JAXBContext jaxb) {
-        return null; // TODO
+    	
+    	ArrayList<Student> studentList = new ArrayList<>();
+    	File[] studentFiles = studentDirectory.listFiles();
+    	
+    	for(File i : studentFiles){
+    		studentList.add(readStudent(i, jaxb));
+    	}
+    	
+    	return studentList;
     }
 
     /**
@@ -45,7 +71,20 @@ public class Main {
      * @return an {@link Instructor} object built using the {@link Contact} data in the given file
      */
     public static Instructor readInstructor(File instructorContactFile, JAXBContext jaxb) {
-        return null; // TODO
+    	
+    	Contact contact = null;
+        
+    	try {
+			Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+			contact = (Contact) unmarshaller.unmarshal(instructorContactFile);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+    	
+    	Instructor instructor = new Instructor();
+    	instructor.setContact(contact);
+    	
+    	return instructor;
     }
 
     /**
@@ -60,7 +99,38 @@ public class Main {
      * @return a {@link Session} object built from the data in the given directory
      */
     public static Session readSession(File rootDirectory, JAXBContext jaxb) {
-        return null; // TODO
+    	
+    	Session session = new Session();
+    	Instructor instructor = new Instructor();
+    	List<Student> studentList = new ArrayList<>();
+    	File studentsFile = null;
+    	File instructorFile = null;
+    	
+    	//tempFileList is used to store each folders sub-folders
+    	//1. - tempFileList[0] = "date" folder
+    	//
+    	//2. - tempFileList[0] = "students" folder
+    	//	   tempFileList[1] = "instructor.xml"
+    	File[] tempFileList;
+    	
+    	String location = rootDirectory.getName();
+    	
+    	tempFileList = rootDirectory.listFiles();	//1
+    	String date = tempFileList[0].getName();	
+    	
+    	tempFileList = tempFileList[0].listFiles();	//2
+    	studentsFile = tempFileList[1];		
+    	instructorFile = tempFileList[0];	
+    	
+    	instructor = readInstructor(instructorFile, jaxb);
+    	studentList = readStudents(studentsFile, jaxb);
+    	
+    	session.setLocation(location);
+    	session.setStartDate(date);
+    	session.setInstructor(instructor);
+    	session.setStudents(studentList);
+    	
+    	return session;
     }
 
     /**
@@ -71,7 +141,14 @@ public class Main {
      * @param jaxb the JAXB context to use
      */
     public static void writeSession(Session session, File sessionFile, JAXBContext jaxb) {
-        // TODO
+        
+    	try {
+			Marshaller marshaller = jaxb.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.marshal(session, sessionFile);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -101,6 +178,17 @@ public class Main {
      *      </session>
      */
     public static void main(String[] args) {
-        // TODO
+    	
+    	File inputFile = new File("./input/memphis/");
+    	File outputFile = new File("./output/session.xml");
+    	Session session = null;
+    	
+    	try {
+			JAXBContext jaxb = JAXBContext.newInstance(Contact.class, Session.class);
+			session = readSession(inputFile, jaxb);
+			writeSession(session, outputFile, jaxb);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}    	
     }
 }
