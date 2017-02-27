@@ -1,1 +1,5 @@
-<student/>
+<student firstName="Jonathan" lastName="Greer">
+    <favorite-ide>Eclipse</favorite-ide>
+    <favorite-language>Prolog</favorite-language>
+    <favorite-paradigm>Declarative</favorite-paradigm>
+</student>

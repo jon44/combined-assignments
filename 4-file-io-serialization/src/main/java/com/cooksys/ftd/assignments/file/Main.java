@@ -107,18 +107,17 @@ public class Main {
     	File instructorFile = null;
     	
     	//tempFileList is used to store each folders sub-folders
-    	//1. - tempFileList[0] = "date" folder
-    	//
-    	//2. - tempFileList[0] = "students" folder
-    	//	   tempFileList[1] = "instructor.xml"
     	File[] tempFileList;
     	
     	String location = rootDirectory.getName();
     	
-    	tempFileList = rootDirectory.listFiles();	//1
+    	tempFileList = rootDirectory.listFiles();
+    	//tempFileList[0] = "date" folder
     	String date = tempFileList[0].getName();	
     	
-    	tempFileList = tempFileList[0].listFiles();	//2
+    	tempFileList = tempFileList[0].listFiles();
+    	//tempFileList[0] = "students" folder
+    	//tempFileList[1] = "instructor.xml" file
     	studentsFile = tempFileList[1];		
     	instructorFile = tempFileList[0];	
     	

@@ -1,8 +1,19 @@
 package com.cooksys.ftd.assignments.socket;
 
-import com.cooksys.ftd.assignments.socket.model.Student;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
+import javax.xml.bind.Unmarshaller;
+
+import com.cooksys.ftd.assignments.socket.model.Config;
+import com.cooksys.ftd.assignments.socket.model.Student;
 
 public class Server extends Utils {
 
@@ -14,7 +25,19 @@ public class Server extends Utils {
      * @return a {@link Student} object unmarshalled from the given file path
      */
     public static Student loadStudent(String studentFilePath, JAXBContext jaxb) {
-        return null; // TODO
+
+    	File studentFile = new File(studentFilePath);
+    	
+    	try {
+			Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+			Student student = new Student();
+			student = (Student) unmarshaller.unmarshal(studentFile);
+			return student;
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+    	
+    	return null;
     }
 
     /**
@@ -30,6 +53,35 @@ public class Server extends Utils {
      * Following this transaction, the server may shut down or listen for more connections.
      */
     public static void main(String[] args) {
-        // TODO
+    	
+    	JAXBContext jaxb = Utils.createJAXBContext();
+
+    	String configFilePath = "./config/config.xml";
+    	Config config = Utils.loadConfig(configFilePath, jaxb);
+    	
+    	int port = config.getLocal().getPort();
+    	
+    	try {
+			ServerSocket serverSocket = new ServerSocket(port);
+			Socket clientSocket = serverSocket.accept();
+			
+			OutputStream out = clientSocket.getOutputStream();
+			
+			String studentFilePath = config.getStudentFilePath();
+			Student student = loadStudent(studentFilePath, jaxb);
+			
+			Marshaller marshaller = jaxb.createMarshaller();
+			//marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.marshal(student, out);
+			
+			serverSocket.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (PropertyException e) {
+			e.printStackTrace();
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		} 
     }
 }
