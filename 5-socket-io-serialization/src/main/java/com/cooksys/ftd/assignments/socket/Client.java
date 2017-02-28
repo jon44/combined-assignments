@@ -2,7 +2,6 @@ package com.cooksys.ftd.assignments.socket;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.Socket;
@@ -10,6 +9,7 @@ import java.net.UnknownHostException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import com.cooksys.ftd.assignments.socket.model.Config;
@@ -37,21 +37,18 @@ public class Client {
     	int port = config.getRemote().getPort();
     	
     	try {
-			Socket clientSocket = new Socket(hostName, port);
-			InputStreamReader in = new InputStreamReader(clientSocket.getInputStream());
-			String readIntoString = new String();
-			StringReader reader = new StringReader(readIntoString);
-			//char[] charArray = new char[500];
-			//in.read(charArray, 0, 500);
-			//System.out.println(in.toString());
-			//StringReader reader = new StringReader();
+    		Socket clientSocket = new Socket(hostName, port);
+			BufferedReader clientReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			
+			String stringStudent = clientReader.readLine();
+			StringReader stringReader = new StringReader(stringStudent);
 			Unmarshaller unmarshaller = jaxb.createUnmarshaller();
-			System.out.println("before unmarshal student");
-			Student student = (Student) unmarshaller.unmarshal(reader);
-			//Student student = (Student) unmarshaller.unmarshal(reader);
-			//System.out.println(student.getFavoriteIDE());
+			Student student = (Student) unmarshaller.unmarshal(stringReader);
 			
+			Marshaller marshaller = jaxb.createMarshaller();
+			marshaller.setProperty(marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.marshal(student, System.out);
+						
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
