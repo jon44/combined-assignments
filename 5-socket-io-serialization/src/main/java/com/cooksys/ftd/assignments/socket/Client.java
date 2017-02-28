@@ -1,6 +1,10 @@
 package com.cooksys.ftd.assignments.socket;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -24,8 +28,6 @@ public class Client {
      */
     public static void main(String[] args) {
     	
-    	System.out.println("Client");
-    	
     	JAXBContext jaxb = Utils.createJAXBContext();
 
     	String configFilePath = "./config/config.xml";
@@ -36,13 +38,19 @@ public class Client {
     	
     	try {
 			Socket clientSocket = new Socket(hostName, port);
-			System.out.println(clientSocket.isConnected());
+			InputStreamReader in = new InputStreamReader(clientSocket.getInputStream());
+			String readIntoString = new String();
+			StringReader reader = new StringReader(readIntoString);
+			//char[] charArray = new char[500];
+			//in.read(charArray, 0, 500);
+			//System.out.println(in.toString());
+			//StringReader reader = new StringReader();
 			
 			Unmarshaller unmarshaller = jaxb.createUnmarshaller();
 			System.out.println("before unmarshal student");
-			Student student = (Student) unmarshaller.unmarshal(clientSocket.getInputStream());
-			System.out.println(student.getFavoriteIDE());
-			clientSocket.close();
+			Student student = (Student) unmarshaller.unmarshal(reader);
+			//Student student = (Student) unmarshaller.unmarshal(reader);
+			//System.out.println(student.getFavoriteIDE());
 			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

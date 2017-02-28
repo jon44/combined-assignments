@@ -3,6 +3,9 @@ package com.cooksys.ftd.assignments.socket;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -64,18 +67,18 @@ public class Server extends Utils {
     	try {
 			ServerSocket serverSocket = new ServerSocket(port);
 			Socket clientSocket = serverSocket.accept();
-			
-			OutputStream out = clientSocket.getOutputStream();
+			OutputStreamWriter out = new OutputStreamWriter(clientSocket.getOutputStream());
+			StringWriter writer = new StringWriter();
 			
 			String studentFilePath = config.getStudentFilePath();
 			Student student = loadStudent(studentFilePath, jaxb);
 			
 			Marshaller marshaller = jaxb.createMarshaller();
-			//marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.marshal(student, out);
+			marshaller.marshal(student, writer);
+			System.out.println(writer.toString());
+			out.write(writer.toString(), 0, (writer.toString().length()));
 			
-			serverSocket.close();
-			
+						
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (PropertyException e) {
