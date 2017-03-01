@@ -1,10 +1,13 @@
 package com.cooksys.ftd.assignments.concurrency.model.config;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import javax.xml.bind.annotation.*;
 import java.nio.file.Path;
-import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -17,7 +20,20 @@ public class Config {
      * @return the unmarshalled {@link Config} object
      */
     public static Config load(Path path) {
-        throw new NotImplementedException();
+        
+    	Config config = new Config();
+    	
+    	try {
+			JAXBContext jaxb = JAXBContext.newInstance(Config.class, ServerConfig.class, ClientConfig.class, ClientInstanceConfig.class);
+			
+			Unmarshaller unmarshaller = jaxb.createUnmarshaller();
+			config = (Config) unmarshaller.unmarshal(path.toFile());
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return config;
     }
 
     /**

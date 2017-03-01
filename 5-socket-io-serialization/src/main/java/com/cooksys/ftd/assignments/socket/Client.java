@@ -9,7 +9,6 @@ import java.net.UnknownHostException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import com.cooksys.ftd.assignments.socket.model.Config;
@@ -44,10 +43,9 @@ public class Client {
 			StringReader stringReader = new StringReader(stringStudent);
 			Unmarshaller unmarshaller = jaxb.createUnmarshaller();
 			Student student = (Student) unmarshaller.unmarshal(stringReader);
+			System.out.println(student.toString());
 			
-			Marshaller marshaller = jaxb.createMarshaller();
-			marshaller.setProperty(marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.marshal(student, System.out);
+			clientSocket.close();
 						
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

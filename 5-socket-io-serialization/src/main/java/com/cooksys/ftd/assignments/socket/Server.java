@@ -66,7 +66,6 @@ public class Server extends Utils {
     	try {
 			ServerSocket serverSocket = new ServerSocket(port);
 			Socket clientSocket = serverSocket.accept();
-			OutputStreamWriter out = new OutputStreamWriter(clientSocket.getOutputStream());
 			PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 			StringWriter writer = new StringWriter();
 			
@@ -78,7 +77,8 @@ public class Server extends Utils {
 			printWriter.println(writer.toString());
 			printWriter.flush();
 						
-			Thread.sleep(60000);
+			Thread.sleep(10000);
+			clientSocket.close();
 			serverSocket.close();
 			
 						
