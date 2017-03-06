@@ -66,10 +66,7 @@ public class Client implements Runnable {
         			numInstances++;
     			}
     			
-    			System.out.println(threadList.size());
     			for(int i = 0; i < threadList.size(); i++) {
-    				System.out.println(i);
-    				System.out.println(threadList.get(i).isAlive());
     				threadList.get(i).join();
     			}
     			

@@ -33,7 +33,7 @@ public class ClientHandler implements Runnable {
     public void run() {
     	JAXBContext requestContext = Request.context();
         JAXBContext responseContext = Response.context();
-        Boolean done = false;
+        boolean done = false;
         RequestType requestType;
         
         try {
@@ -48,7 +48,7 @@ public class ClientHandler implements Runnable {
 				Request request = (Request) unmarshaller.unmarshal(stringReader);
 				
 				Response response = new Response();
-				String responseString;
+				String responseString = new String();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 				LocalDateTime now;
 
@@ -68,6 +68,10 @@ public class ClientHandler implements Runnable {
 						response.setSuccessful(true);
 						break;
 					case DONE :
+						responseString = "done";
+						response.setData(responseString);
+						response.setType(requestType);
+						response.setSuccessful(true);
 						done = true;
 						break;
 					default :
@@ -76,16 +80,12 @@ public class ClientHandler implements Runnable {
 						response.setSuccessful(false);
 				}
 				
-				if(!done) {
-					
-					StringWriter stringWriter = new StringWriter();
-					marshaller.marshal(response, stringWriter);
-					printWriter.println(stringWriter.toString());
-					printWriter.flush();
-				}
+				StringWriter stringWriter = new StringWriter();
+				marshaller.marshal(response, stringWriter);
+				printWriter.println(stringWriter.toString());
+				printWriter.flush();
 			}
-        	//after while
-		} catch (IOException e) {
+ 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (JAXBException e) {
 			e.printStackTrace();

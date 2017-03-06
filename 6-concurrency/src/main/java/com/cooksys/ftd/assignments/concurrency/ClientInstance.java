@@ -58,7 +58,9 @@ public class ClientInstance implements Runnable {
 				StringReader stringReader = new StringReader(responseString);
 				Response response = (Response) unmarshaller.unmarshal(stringReader);
 				
-				System.out.println(response.getData() + "\n");
+				if(!response.getData().equals("done")){
+					System.out.println(response.getData() + "\n");
+				}
 			}
 			
 		} catch (IOException e) {

@@ -9,49 +9,49 @@
         <max-instances>4</max-instances>
         <spawn-strategy>PARALLEL</spawn-strategy>
         <instances>
-            <instance delay="500">
+            <instance delay="1000">
                 <request>IDENTITY</request>
                 <request>TIME</request>
                 <request>TIME</request>
                 <request>DONE</request>
             </instance>
-            <instance delay="500">
+            <instance delay="2000">
                 <request>IDENTITY</request>
                 <request>TIME</request>
                 <request>TIME</request>
                 <request>DONE</request>
             </instance>
-            <instance delay="500">
+            <instance delay="3000">
                 <request>IDENTITY</request>
                 <request>TIME</request>
                 <request>TIME</request>
                 <request>DONE</request>
             </instance>
-            <instance delay="500">
+            <instance delay="4000">
                 <request>IDENTITY</request>
                 <request>TIME</request>
                 <request>TIME</request>
                 <request>DONE</request>
             </instance>
-            <instance delay="500">
+            <instance delay="5000">
                 <request>IDENTITY</request>
                 <request>TIME</request>
                 <request>TIME</request>
                 <request>DONE</request>
             </instance>
-            <instance delay="500">
+            <instance delay="6000">
                 <request>IDENTITY</request>
                 <request>TIME</request>
                 <request>TIME</request>
                 <request>DONE</request>
             </instance>
-            <instance delay="500">
+            <instance delay="7000">
                 <request>IDENTITY</request>
                 <request>TIME</request>
                 <request>TIME</request>
                 <request>DONE</request>
             </instance>
-            <instance delay="500">
+            <instance delay="8000">
                 <request>IDENTITY</request>
                 <request>TIME</request>
                 <request>TIME</request>
