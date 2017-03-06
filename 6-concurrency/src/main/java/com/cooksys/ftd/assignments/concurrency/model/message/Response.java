@@ -1,10 +1,23 @@
 package com.cooksys.ftd.assignments.concurrency.model.message;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Response {
+	
+	public static JAXBContext context() {
+		
+		try {
+			return JAXBContext.newInstance(Response.class);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
     @XmlValue
     private String data;

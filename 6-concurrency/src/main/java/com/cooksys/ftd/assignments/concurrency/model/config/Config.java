@@ -29,7 +29,6 @@ public class Config {
 			Unmarshaller unmarshaller = jaxb.createUnmarshaller();
 			config = (Config) unmarshaller.unmarshal(path.toFile());
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
